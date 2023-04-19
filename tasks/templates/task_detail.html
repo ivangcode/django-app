@@ -2,5 +2,12 @@
 <h1>{{task.title}}</h1>
 
 <p>{{task.user}}</p>
-
+{{error}}
+<form action="" method="POST">
+    {%csrf_token%}
+    {{form.as_p}}
+    <button>
+        Update
+    </button>
+</form>
 {% endblock %}
