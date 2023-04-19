@@ -26,7 +26,12 @@ urlpatterns = [
     path("logout/", views.logoutSession, name="logout"),
     path("login/", views.loginUser, name="login"),
     path(
-        "tasks/create",
+        "tasks/<int:task_id>/",
+        views.tasks_detail,
+        name="task_detail",
+    ),
+    path(
+        "tasks/create/",
         views.create_task,
         name="create_task",
     ),
