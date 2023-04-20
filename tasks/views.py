@@ -14,14 +14,33 @@ from django.contrib.auth import (
     authenticate,
 )
 from django.db import IntegrityError
+from django.utils import timezone
 from .forms import TaskForm
 from .models import Task
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
 def home(request):
     return render(request, "home.html")
+
+@login_required
+def tasks_completed(request):
+    tasks = Task.objects.filter(
+        user=request.user, datecompleted__isnull=False
+    ).order_by("-datecompleted")
+    return render(request, "tasks.html", {"tasks": tasks})
+
+@login_required
+def complete_task(request, task_id):
+    task = get_object_or_404(
+        Task, pk=task_id, user=request.user
+    )
+    if request.method == "POST":
+        task.datecompleted = timezone.now()
+        task.save()
+        return redirect("tasks")
 
 
 def signup(request):
@@ -65,12 +84,14 @@ def signup(request):
             },
         )
 
-
+@login_required
 def tasks(request):
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(
+        user=request.user, datecompleted__isnull=True
+    )
     return render(request, "tasks.html", {"tasks": tasks})
 
-
+@login_required
 def tasks_detail(request, task_id):
     if request.method == "GET":
         task = get_object_or_404(
@@ -102,7 +123,7 @@ def tasks_detail(request, task_id):
                 },
             )
 
-
+@login_required
 def logoutSession(request):
     logout(request)
     return redirect("home")
@@ -138,7 +159,7 @@ def loginUser(request):
             login(request, user)
             return redirect("tasks")
 
-
+@login_required
 def create_task(request):
     if request.method == "GET":
         return render(
