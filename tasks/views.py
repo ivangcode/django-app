@@ -136,7 +136,6 @@ def loginUser(request):
             "login.html",
             {
                 "form": AuthenticationForm,
-                "error": "User or password are incorrect",
             },
         )
     else:

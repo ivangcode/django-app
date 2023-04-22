@@ -1,24 +1,30 @@
 {% extends 'base.html' %} {% block content %}
-<h1>TASKS</h1>
-
-<ul>
-  {% for task in tasks %}
-  <li>
-    <a href="{% url 'task_detail' task.id %}">
-      {% if task.important %}
-      <h1>
-        <strong> {{task.title}} </strong>
-      </h1>
-      <span>Important</span>
-      {% else %}
-      <h1>{{task.title}}</h1>
-      {% endif %}
-      <p>{{task.description}}</p>
-      <p>{{task.user.username}}</p>
-      <p>{{task.datecompleted|date:'M j Y:i'}}</p>
-    </a>
-  </li>
-  {% endfor %}
-</ul>
+<div class="p-3 my-3 container-fluid" style="width: 100%; max-width: 1000px;">
+  <h1>TASKS</h1>
+  <ul style="list-style-type:none;" class="p-0">
+    {% for task in tasks %}
+    <li class="m-4">
+      <div class="card">
+        {% if task.important %}
+        <h5 class="card-header">
+          <strong> {{task.title}} </strong>
+          <span class="badge bg-dark">Important</span>
+        </h5>
+        {% else %}
+        <h5 class="card-header">Special title treatment</h5>
+        {% endif %}
+        <div class="card-body">
+          <p class="card-text">{{task.title}}</p>
+          <p class="card-text">-{{task.user.username}}</p>
+          <p class="card-text">{{task.datecompleted|date:'M j Y:i'}}</p>
+          <a href="{% url 'task_detail' task.id %}" class="btn btn-primary"
+            >View</a
+          >
+        </div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 
 {% endblock %}

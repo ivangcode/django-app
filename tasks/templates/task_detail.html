@@ -1,18 +1,17 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{{task.title}}</h1>
+<div class="card p-3 my-3 container-fluid" style="max-width: 700px">
+  <h3>{{task.title}}</h3>
 
-<p>{{task.user}}</p>
-{{error}}
-<form action="" method="POST">
-    {%csrf_token%}
-    {{form.as_p}}
-    <button>
-        Update
-    </button>
-</form>
+  <p>by: {{task.user}}</p>
+  {{error}}
+  <form action="" method="POST">
+    {%csrf_token%} {{form.as_div}}
+    <button class="mt-2 btn btn-light">Update</button>
+  </form>
 
-<form action="{% url 'complete_task' task.id %}" method="POST">
+  <form action="{% url 'complete_task' task.id %}" method="POST">
     {%csrf_token%}
-    <button>Complete</button>
-</form>
+    <button class="btn btn-primary mt-2">Complete</button>
+  </form>
+</div>
 {% endblock %}
